@@ -31,6 +31,9 @@ def orders_list(request):
         'Delivering': orders.filter(status='delivering'),
         'Completed': orders.filter(status='completed'),
     }
+
+    total_money = sum(order.total_amount for order in orders)
+
     return render(
         request,
         'frontend/orders_list.html',
@@ -39,6 +42,7 @@ def orders_list(request):
             'STATUS_FLOW': STATUS_FLOW,
             'selected_date': filter_date,
             'available_dates': [d.isoformat() for d in available_dates],  # Send to JS
+            'total_amount_for_day': total_money
         }
     )
 

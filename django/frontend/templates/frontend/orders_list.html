@@ -133,14 +133,21 @@
 <body>
     <h1>Orders Grouped by Status</h1>
 
-    <div class="date-filter">
-        <form method="get">
-            <label for="date">Select date:</label>
-            <input type="text" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-            <button type="submit">Filter</button>
-        </form>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="date-filter">
+            Total for the day: {{ total_amount_for_day }}лв.
+        </div>
+        <div class="date-filter">
+            <form method="get">
+                <label for="date">Select date:</label>
+                <input type="text" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <button type="submit">Filter</button>
+            </form>
+        </div>
     </div>
 
+
+    {% load tz %}
     {% load custom_tags %}
     {% for status, orders in grouped_orders.items %}
         <h2>{{ status|capfirst }} Orders</h2>
@@ -165,12 +172,12 @@
                             <td data-label="Items">
                                 <ul>
                                     {% for item in order.items.all %}
-                                        <li>{{ item.name }} - ${{ item.price }}</li>
+                                        <li>{{ item.name }} - {{ item.price }}лв.</li>
                                     {% endfor %}
                                 </ul>
                             </td>
-                            <td data-label="Total">${{ order.total_amount }}</td>
-                            <td data-label="Date">{{ order.order_date }}</td>
+                            <td data-label="Total">{{ order.total_amount }}лв.</td>
+                            <td data-label="Date">{{ order.order_date|localtime }}</td>
                             <td data-label="Address">{{ order.delivery_address }}</td>
                             <td data-label="Action">
                                 {% with next_status=STATUS_FLOW|get_item:order.status %}

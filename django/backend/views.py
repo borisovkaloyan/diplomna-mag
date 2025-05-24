@@ -14,13 +14,57 @@ from backend.serializers import (
 
 # Create your views here.
 
-class MenuItemViewSet(viewsets.ModelViewSet):
+class MenuItemViewSet(viewsets.ViewSet):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
 
-class OrderViewSet(viewsets.ModelViewSet):
+    @action(detail=False, methods=['get'], url_path='get-all-categories')
+    def get_all_categories(self, request):
+        categories = MenuItem.objects.values_list('category', flat=True).distinct()
+        return Response({'categories': list(categories)})
+    
+    @action(detail=False, methods=['get'], url_path='items-by-category')
+    def items_by_category(self, request):
+        category = request.query_params.get('category')
+        if not category:
+            return Response({'error': 'Category parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        items = MenuItem.objects.filter(category=category).distinct()
+        serializer = MenuItemSerializer(items, many=True)
+        return Response(serializer.data)
+    
+    def list(self, request):
+        items = MenuItem.objects.all()
+        serializer = MenuItemSerializer(items, many=True)
+        return Response(serializer.data)
+
+
+class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    @action(detail=False, methods=['get'], url_path='orders-by-user')
+    def orders_by_user(self, request):
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            return Response({'error': 'User ID parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        orders = Order.objects.filter(user_id=user_id).order_by('-order_date')
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'], url_path='create-order')
+    def create_order(self, request):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            order = serializer.save()
+            return Response({
+                'message': 'Order created successfully',
+                'order_id': order.id,
+                'total_amount': str(order.total_amount),
+                'status': order.status,
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['get'], url_path='latest-order')
     def latest_order(self, request):
