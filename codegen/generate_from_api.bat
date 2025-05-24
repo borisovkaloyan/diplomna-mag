@@ -1,0 +1,1 @@
+java -jar openapi-generator-cli.jar generate -i http://localhost:8000/schema/ -g kotlin -o generated_client
