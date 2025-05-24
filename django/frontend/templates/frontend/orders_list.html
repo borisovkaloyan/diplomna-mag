@@ -2,48 +2,226 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>All Orders</title>
+    <title>List of orders for the day</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+            background-color: #f9fafb;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 1.5em;
+            color: #222;
+            border-left: 4px solid #4F46E5;
+            padding-left: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        button {
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #4338CA;
+        }
+
+        .no-action {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        form {
+            margin: 0;
+        }
+
+        .date-filter {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .date-filter label {
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .date-filter input {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 20px;
+                border-bottom: 2px solid #e5e7eb;
+                background-color: #fff;
+                border-radius: 8px;
+                padding: 10px;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 10px;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                flex-basis: 40%;
+            }
+        }
     </style>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <body>
-    <h1>All Orders</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Customer</th>
-                <th>Email</th>
-                <th>Items</th>
-                <th>Total Amount</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Delivery Address</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                <tr>
-                    <td>{{ order.user.get_full_name|default:order.user.username }}</td>
-                    <td>{{ order.user.email }}</td>
-                    <td>
-                        <ul>
-                        {% for item in order.items.all %}
-                            <li>{{ item.name }} - {{ item.price }}лв.</li>
-                        {% endfor %}
-                        </ul>
-                    </td>
-                    <td>{{ order.total_amount }}лв.</td>
-                    <td>{{ order.order_date }}</td>
-                    <td>{{ order.get_status_display }}</td>
-                    <td>{{ order.delivery_address }}</td>
-                </tr>
-            {% empty %}
-                <tr><td colspan="7">No orders found.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1>Orders Grouped by Status</h1>
+
+    <div class="date-filter">
+        <form method="get">
+            <label for="date">Select date:</label>
+            <input type="text" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+
+    {% load custom_tags %}
+    {% for status, orders in grouped_orders.items %}
+        <h2>{{ status|capfirst }} Orders</h2>
+        {% if orders %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td data-label="Customer">{{ order.user.get_full_name|default:order.user.username }}</td>
+                            <td data-label="Email">{{ order.user.email }}</td>
+                            <td data-label="Items">
+                                <ul>
+                                    {% for item in order.items.all %}
+                                        <li>{{ item.name }} - ${{ item.price }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td data-label="Total">${{ order.total_amount }}</td>
+                            <td data-label="Date">{{ order.order_date }}</td>
+                            <td data-label="Address">{{ order.delivery_address }}</td>
+                            <td data-label="Action">
+                                {% with next_status=STATUS_FLOW|get_item:order.status %}
+                                    {% if order.status != 'completed' %}
+                                        <form action="{% url 'advance-order-status' order.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit">Move to {{ next_status|capfirst }}</button>
+                                        </form>
+                                    {% else %}
+                                        <span class="no-action">No further actions. Order complete</span>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No {{ status|lower }} orders.</p>
+        {% endif %}
+    {% endfor %}
 </body>
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr("#date", {
+            dateFormat: "Y-m-d",
+            enable: {{ available_dates|safe }},
+            defaultDate: "{{ selected_date|date:'Y-m-d' }}"
+        });
+    });
+</script>
+
+<script>
+    async function checkForNewOrders() {
+        try {
+            const response = await fetch("/api/orders/latest-order/");
+            const data = await response.json();
+
+            const latestTimestamp = new Date(data.timestamp);
+            const today = new Date().toISOString().slice(0, 10);
+
+            if (latestTimestamp.toISOString().slice(0, 10) === today) {
+                location.reload();  // reload page if new order is from today
+            }
+        } catch (err) {
+            console.error("Error checking for new orders:", err);
+        }
+    }
+
+    // Check every 10 seconds
+    setInterval(checkForNewOrders, 10000);
+</script>

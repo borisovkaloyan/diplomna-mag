@@ -36,8 +36,9 @@ class Order(models.Model):
         max_length=20,
         choices=[
             ('pending', 'Pending'),
-            ('completed', 'Completed'),
-            ('canceled', 'Canceled')
+            ('preparing', 'Preparing'),
+            ('delivering', 'Delivering'),
+            ('completed', 'Completed')
         ],
         default='pending'
     )

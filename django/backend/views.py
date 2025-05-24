@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,6 +21,13 @@ class MenuItemViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+    @action(detail=False, methods=['get'], url_path='latest-order')
+    def latest_order(self, request):
+        latest = Order.objects.order_by('-order_date').first()
+        if latest:
+            return Response({'timestamp': latest.order_date.isoformat()})
+        return Response({'timestamp': None})
 
 class UserViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -46,3 +54,4 @@ class UserViewSet(viewsets.ViewSet):
                 'last_name': user.last_name,
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
