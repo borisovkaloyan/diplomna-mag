@@ -41,6 +41,7 @@ def orders_list(request):
             'grouped_orders': grouped_orders,
             'STATUS_FLOW': STATUS_FLOW,
             'selected_date': filter_date,
+            'today': date.today(),
             'available_dates': [d.isoformat() for d in available_dates],  # Send to JS
             'total_amount_for_day': total_money
         }

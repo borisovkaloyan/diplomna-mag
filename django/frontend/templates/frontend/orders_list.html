@@ -181,13 +181,17 @@
                             <td data-label="Address">{{ order.delivery_address }}</td>
                             <td data-label="Action">
                                 {% with next_status=STATUS_FLOW|get_item:order.status %}
-                                    {% if order.status != 'completed' %}
-                                        <form action="{% url 'advance-order-status' order.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit">Move to {{ next_status|capfirst }}</button>
-                                        </form>
+                                    {% if selected_date == today %}
+                                        {% if order.status != 'completed' %}
+                                            <form action="{% url 'advance-order-status' order.id %}" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit">Move to {{ next_status|capfirst }}</button>
+                                            </form>
+                                        {% else %}
+                                            <span class="no-action">No further actions. Order complete</span>
+                                        {% endif %}
                                     {% else %}
-                                        <span class="no-action">No further actions. Order complete</span>
+                                        <span class="no-action">Actions not available for previous days</span>
                                     {% endif %}
                                 {% endwith %}
                             </td>
