@@ -9,7 +9,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "djangorestframework (>=3.16.0,<4.0.0)",
-    "pillow (>=11.2.1,<12.0.0)"
+    "pillow (>=11.2.1,<12.0.0)",
+    "drf-spectacular (>=0.28.0,<0.29.0)"
 ]
 
 
