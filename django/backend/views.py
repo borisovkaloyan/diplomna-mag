@@ -93,7 +93,7 @@ class UserViewSet(viewsets.ViewSet):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
             }, status=status.HTTP_201_CREATED)
-        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
         request=UserLoginSerializer,
