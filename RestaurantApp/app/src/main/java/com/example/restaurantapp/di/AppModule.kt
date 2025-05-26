@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.openapitools.client.apis.ApiApi
 import javax.inject.Singleton
 
 @Module
@@ -30,6 +31,12 @@ object AppModule {
         bluetoothAdapter: BluetoothAdapter
     ): BLEDataReceiveManager {
         return BLEDataReceiveManagerImpl(bluetoothAdapter, context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiApi(): ApiApi {
+        return ApiApi(basePath = "http://192.168.0.183:8000")
     }
 
 }

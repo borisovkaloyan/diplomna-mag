@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("org.openapi.generator")
 }
 
 android {
@@ -13,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.restaurantapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -52,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.volley)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,4 +73,16 @@ dependencies {
     // Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.37.0")
 
+    // Generated client
+    implementation(libs.okhttp)
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+}
+
+openApiGenerate {
+    generatorName.set("kotlin")
+    remoteInputSpec.set("http://localhost:8000/schema/")
+    outputDir.set("$rootDir\\app\\src\\main\\java\\com\\example\\restaurantapp\\apiclient")
+    generateApiTests = false
+    generateModelTests = false
 }
