@@ -3,11 +3,14 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from drf_spectacular.utils import extend_schema
 
 from backend.models import MenuItem, Order
 from backend.serializers import (
     MenuItemSerializer,
     OrderSerializer,
+    UserLoginResponseSerializer,
+    UserRegistrationResponseSerializer,
     UserRegistrationSerializer,
     UserLoginSerializer,
 )
@@ -74,6 +77,11 @@ class OrderViewSet(viewsets.ViewSet):
         return Response({'timestamp': None})
 
 class UserViewSet(viewsets.ViewSet):
+
+    @extend_schema(
+        request=UserRegistrationSerializer,
+        responses=UserRegistrationResponseSerializer
+    )
     @action(detail=False, methods=['post'])
     def register(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -85,17 +93,24 @@ class UserViewSet(viewsets.ViewSet):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
             }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        request=UserLoginSerializer,
+        responses=UserLoginResponseSerializer
+    )
     @action(detail=False, methods=['post'])
     def login(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
-            return Response({
-                'username': user.username,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-            })
+            return Response(
+                {
+                    'username': user.username,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                },
+                status=status.HTTP_202_ACCEPTED
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

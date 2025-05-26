@@ -30,14 +30,33 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already in use.")
         return value
+    
+class UserRegistrationResponseSerializer(serializers.Serializer):
+    message = serializers.CharField(default="User registered successfully")
+    username = serializers.CharField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
 
+    class Meta:
+        fields = ['message', 'username', 'first_name', 'last_name']
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+    class Meta:
+        fields = ['username', 'password']
 
     def validate(self, data):
         user = authenticate(**data)
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Invalid username or password")
+    
+class UserLoginResponseSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+    class Meta:
+        fields = ['username', 'first_name', 'last_name']
