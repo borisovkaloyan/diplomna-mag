@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-from backend.models import MenuItem, Order
+from backend.models import MenuItem, Order, MENU_CATEGORIES
 
 
 class MenuItemSerializer(serializers.ModelSerializer):
@@ -14,6 +14,10 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+class OrderCategorySerializer(serializers.Serializer):
+    category = serializers.CharField(required=True)
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

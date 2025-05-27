@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -91,7 +90,7 @@ fun HomeScreen(
         Button(onClick = {
             viewModel.login(
                 onSuccess = { username: String, firstName: String, lastName: String ->
-                    navController.navigate(Screen.UserProfile.createRoute(username, firstName, lastName)) {
+                    navController.navigate(Screen.MenuScreen.createRoute(username, firstName, lastName)) {
                         popUpTo(Screen.HomeScreen.route) { inclusive = true }
                     }
                 },

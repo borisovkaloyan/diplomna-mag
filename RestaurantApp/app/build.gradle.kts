@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+
+    // Image previews
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
 
 openApiGenerate {

@@ -11,11 +11,23 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.openapitools.client.apis.ApiApi
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class BaseUrl
+
+    @Provides
+    @Singleton
+    @BaseUrl
+    fun provideBaseUrl(): String {
+        return "http://192.168.0.183:8000"
+    }
 
     @Provides
     @Singleton
@@ -35,8 +47,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApiApi(): ApiApi {
-        return ApiApi(basePath = "http://192.168.0.183:8000")
+    fun provideApiApi(@BaseUrl baseUrl: String): ApiApi {
+        return ApiApi(basePath = baseUrl)
     }
 
 }

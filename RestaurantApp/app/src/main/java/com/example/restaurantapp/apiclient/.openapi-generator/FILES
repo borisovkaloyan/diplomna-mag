@@ -5,6 +5,7 @@ docs/ApiApi.md
 docs/CategoryEnum.md
 docs/MenuItem.md
 docs/Order.md
+docs/OrderCategory.md
 docs/SchemaApi.md
 docs/StatusEnum.md
 docs/UserLogin.md
@@ -38,6 +39,7 @@ src/main/kotlin/org/openapitools/client/infrastructure/UUIDAdapter.kt
 src/main/kotlin/org/openapitools/client/models/CategoryEnum.kt
 src/main/kotlin/org/openapitools/client/models/MenuItem.kt
 src/main/kotlin/org/openapitools/client/models/Order.kt
+src/main/kotlin/org/openapitools/client/models/OrderCategory.kt
 src/main/kotlin/org/openapitools/client/models/StatusEnum.kt
 src/main/kotlin/org/openapitools/client/models/UserLogin.kt
 src/main/kotlin/org/openapitools/client/models/UserLoginResponse.kt

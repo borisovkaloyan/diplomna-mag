@@ -21,6 +21,7 @@ import okhttp3.HttpUrl
 
 import org.openapitools.client.models.MenuItem
 import org.openapitools.client.models.Order
+import org.openapitools.client.models.OrderCategory
 import org.openapitools.client.models.UserLogin
 import org.openapitools.client.models.UserLoginResponse
 import org.openapitools.client.models.UserRegistration
@@ -121,10 +122,11 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
     }
 
     /**
-     * GET /api/menu-items/items-by-category/
+     * POST /api/menu-items/items-by-category/
      * 
      * 
-     * @return MenuItem
+     * @param orderCategory 
+     * @return kotlin.collections.List<MenuItem>
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
      * @throws UnsupportedOperationException If the API returns an informational or redirection response
@@ -133,11 +135,11 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun apiMenuItemsItemsByCategoryRetrieve() : MenuItem {
-        val localVarResponse = apiMenuItemsItemsByCategoryRetrieveWithHttpInfo()
+    fun apiMenuItemsItemsByCategoryCreate(orderCategory: OrderCategory) : kotlin.collections.List<MenuItem> {
+        val localVarResponse = apiMenuItemsItemsByCategoryCreateWithHttpInfo(orderCategory = orderCategory)
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as MenuItem
+            ResponseType.Success -> (localVarResponse as Success<*>).data as kotlin.collections.List<MenuItem>
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {
@@ -152,36 +154,39 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
     }
 
     /**
-     * GET /api/menu-items/items-by-category/
+     * POST /api/menu-items/items-by-category/
      * 
      * 
-     * @return ApiResponse<MenuItem?>
+     * @param orderCategory 
+     * @return ApiResponse<kotlin.collections.List<MenuItem>?>
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun apiMenuItemsItemsByCategoryRetrieveWithHttpInfo() : ApiResponse<MenuItem?> {
-        val localVariableConfig = apiMenuItemsItemsByCategoryRetrieveRequestConfig()
+    fun apiMenuItemsItemsByCategoryCreateWithHttpInfo(orderCategory: OrderCategory) : ApiResponse<kotlin.collections.List<MenuItem>?> {
+        val localVariableConfig = apiMenuItemsItemsByCategoryCreateRequestConfig(orderCategory = orderCategory)
 
-        return request<Unit, MenuItem>(
+        return request<OrderCategory, kotlin.collections.List<MenuItem>>(
             localVariableConfig
         )
     }
 
     /**
-     * To obtain the request config of the operation apiMenuItemsItemsByCategoryRetrieve
+     * To obtain the request config of the operation apiMenuItemsItemsByCategoryCreate
      *
+     * @param orderCategory 
      * @return RequestConfig
      */
-    fun apiMenuItemsItemsByCategoryRetrieveRequestConfig() : RequestConfig<Unit> {
-        val localVariableBody = null
+    fun apiMenuItemsItemsByCategoryCreateRequestConfig(orderCategory: OrderCategory) : RequestConfig<OrderCategory> {
+        val localVariableBody = orderCategory
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
         localVariableHeaders["Accept"] = "application/json"
 
         return RequestConfig(
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             path = "/api/menu-items/items-by-category/",
             query = localVariableQuery,
             headers = localVariableHeaders,

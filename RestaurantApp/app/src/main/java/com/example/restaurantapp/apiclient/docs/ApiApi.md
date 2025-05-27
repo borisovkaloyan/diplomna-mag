@@ -5,7 +5,7 @@ All URIs are relative to *http://localhost*
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |
 | [**apiMenuItemsGetAllCategoriesRetrieve**](ApiApi.md#apiMenuItemsGetAllCategoriesRetrieve) | **GET** /api/menu-items/get-all-categories/ |  |
-| [**apiMenuItemsItemsByCategoryRetrieve**](ApiApi.md#apiMenuItemsItemsByCategoryRetrieve) | **GET** /api/menu-items/items-by-category/ |  |
+| [**apiMenuItemsItemsByCategoryCreate**](ApiApi.md#apiMenuItemsItemsByCategoryCreate) | **POST** /api/menu-items/items-by-category/ |  |
 | [**apiMenuItemsList**](ApiApi.md#apiMenuItemsList) | **GET** /api/menu-items/ |  |
 | [**apiOrdersCreateOrderCreate**](ApiApi.md#apiOrdersCreateOrderCreate) | **POST** /api/orders/create-order/ |  |
 | [**apiOrdersLatestOrderRetrieve**](ApiApi.md#apiOrdersLatestOrderRetrieve) | **GET** /api/orders/latest-order/ |  |
@@ -61,9 +61,9 @@ Configure cookieAuth:
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
-<a id="apiMenuItemsItemsByCategoryRetrieve"></a>
-# **apiMenuItemsItemsByCategoryRetrieve**
-> MenuItem apiMenuItemsItemsByCategoryRetrieve()
+<a id="apiMenuItemsItemsByCategoryCreate"></a>
+# **apiMenuItemsItemsByCategoryCreate**
+> kotlin.collections.List&lt;MenuItem&gt; apiMenuItemsItemsByCategoryCreate(orderCategory)
 
 
 
@@ -74,24 +74,27 @@ Configure cookieAuth:
 //import org.openapitools.client.models.*
 
 val apiInstance = ApiApi()
+val orderCategory : OrderCategory =  // OrderCategory | 
 try {
-    val result : MenuItem = apiInstance.apiMenuItemsItemsByCategoryRetrieve()
+    val result : kotlin.collections.List<MenuItem> = apiInstance.apiMenuItemsItemsByCategoryCreate(orderCategory)
     println(result)
 } catch (e: ClientException) {
-    println("4xx response calling ApiApi#apiMenuItemsItemsByCategoryRetrieve")
+    println("4xx response calling ApiApi#apiMenuItemsItemsByCategoryCreate")
     e.printStackTrace()
 } catch (e: ServerException) {
-    println("5xx response calling ApiApi#apiMenuItemsItemsByCategoryRetrieve")
+    println("5xx response calling ApiApi#apiMenuItemsItemsByCategoryCreate")
     e.printStackTrace()
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+| Name | Type | Description  | Notes |
+| ------------- | ------------- | ------------- | ------------- |
+| **orderCategory** | [**OrderCategory**](OrderCategory.md)|  | |
 
 ### Return type
 
-[**MenuItem**](MenuItem.md)
+[**kotlin.collections.List&lt;MenuItem&gt;**](MenuItem.md)
 
 ### Authorization
 
@@ -105,7 +108,7 @@ Configure cookieAuth:
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 <a id="apiMenuItemsList"></a>

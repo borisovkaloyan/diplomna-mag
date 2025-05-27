@@ -10,7 +10,8 @@ import androidx.navigation.navArgument
 
 @Composable
 fun Navigation(
-    onBluetoothStateChanged: () -> Unit
+    onBluetoothStateChanged: () -> Unit,
+    baseUrl: String
 ) {
 
     val navController = rememberNavController()
@@ -30,7 +31,7 @@ fun Navigation(
         }
 
         composable(
-            route = Screen.UserProfile.route,
+            route = Screen.MenuScreen.route,
             arguments = listOf(
                 navArgument("username") { type = NavType.StringType },
                 navArgument("firstName") { type = NavType.StringType },
@@ -41,7 +42,8 @@ fun Navigation(
             val firstName = backStackEntry.arguments?.getString("firstName") ?: ""
             val lastName = backStackEntry.arguments?.getString("lastName") ?: ""
 
-            UserProfileScreen(username, firstName, lastName)
+            MenuScreen(baseUrl)
+//            MenuScreen(username, firstName, lastName)
         }
 
         composable(Screen.Register.route) {
@@ -53,9 +55,10 @@ fun Navigation(
 sealed class Screen(val route: String) {
     data object HomeScreen : Screen("home_screen?message={message}")
     data object BLEDevices : Screen("ble_devices")
-    data object UserProfile : Screen("user_profile/{username}/{firstName}/{lastName}") {
+    data object MenuScreen : Screen("menu_screen/{username}/{firstName}/{lastName}") {
         fun createRoute(username: String, firstName: String, lastName: String) =
-            "user_profile/$username/$firstName/$lastName"
+            "menu_screen/$username/$firstName/$lastName"
     }
     data object Register : Screen("register")
+    data object Cart : Screen("cart")
 }

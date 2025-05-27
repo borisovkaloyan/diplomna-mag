@@ -12,6 +12,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import com.example.restaurantapp.di.AppModule
+import com.example.restaurantapp.di.AppModule.BaseUrl
 import com.example.restaurantapp.presentation.Navigation
 import com.example.restaurantapp.ui.theme.RestaurantAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +27,7 @@ internal const val ACTION_PERMISSIONS_DENIED = "BluetoothPermission.permissions_
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var bluetoothAdapter: BluetoothAdapter
+    @Inject @BaseUrl lateinit var baseUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,8 @@ class MainActivity : ComponentActivity() {
                 Navigation(
                     onBluetoothStateChanged = {
                         showBluetoothDialog()
-                    }
+                    },
+                    baseUrl
                 )
             }
         }

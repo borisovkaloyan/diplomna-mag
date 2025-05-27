@@ -46,7 +46,7 @@ All URIs are relative to *http://localhost*
 | Class | Method | HTTP request | Description |
 | ------------ | ------------- | ------------- | ------------- |
 | *ApiApi* | [**apiMenuItemsGetAllCategoriesRetrieve**](docs/ApiApi.md#apimenuitemsgetallcategoriesretrieve) | **GET** /api/menu-items/get-all-categories/ |  |
-| *ApiApi* | [**apiMenuItemsItemsByCategoryRetrieve**](docs/ApiApi.md#apimenuitemsitemsbycategoryretrieve) | **GET** /api/menu-items/items-by-category/ |  |
+| *ApiApi* | [**apiMenuItemsItemsByCategoryCreate**](docs/ApiApi.md#apimenuitemsitemsbycategorycreate) | **POST** /api/menu-items/items-by-category/ |  |
 | *ApiApi* | [**apiMenuItemsList**](docs/ApiApi.md#apimenuitemslist) | **GET** /api/menu-items/ |  |
 | *ApiApi* | [**apiOrdersCreateOrderCreate**](docs/ApiApi.md#apiorderscreateordercreate) | **POST** /api/orders/create-order/ |  |
 | *ApiApi* | [**apiOrdersLatestOrderRetrieve**](docs/ApiApi.md#apiorderslatestorderretrieve) | **GET** /api/orders/latest-order/ |  |
@@ -62,6 +62,7 @@ All URIs are relative to *http://localhost*
  - [org.openapitools.client.models.CategoryEnum](docs/CategoryEnum.md)
  - [org.openapitools.client.models.MenuItem](docs/MenuItem.md)
  - [org.openapitools.client.models.Order](docs/Order.md)
+ - [org.openapitools.client.models.OrderCategory](docs/OrderCategory.md)
  - [org.openapitools.client.models.StatusEnum](docs/StatusEnum.md)
  - [org.openapitools.client.models.UserLogin](docs/UserLogin.md)
  - [org.openapitools.client.models.UserLoginResponse](docs/UserLoginResponse.md)

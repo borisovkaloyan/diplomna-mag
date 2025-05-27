@@ -13,6 +13,7 @@ from backend.serializers import (
     UserRegistrationResponseSerializer,
     UserRegistrationSerializer,
     UserLoginSerializer,
+    OrderCategorySerializer
 )
 
 # Create your views here.
@@ -26,12 +27,19 @@ class MenuItemViewSet(viewsets.ViewSet):
         categories = MenuItem.objects.values_list('category', flat=True).distinct()
         return Response({'categories': list(categories)})
     
-    @action(detail=False, methods=['get'], url_path='items-by-category')
+    @extend_schema(
+        request=OrderCategorySerializer,
+        responses=MenuItemSerializer(many=True)
+    )
+    @action(detail=False, methods=['post'], url_path='items-by-category')
     def items_by_category(self, request):
-        category = request.query_params.get('category')
-        if not category:
-            return Response({'error': 'Category parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = OrderCategorySerializer(data=request.data)
         
+        if serializer.is_valid():
+            category = serializer.validated_data.get('category')
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         items = MenuItem.objects.filter(category=category).distinct()
         serializer = MenuItemSerializer(items, many=True)
         return Response(serializer.data)

@@ -4,6 +4,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+MENU_CATEGORIES = [
+    ('salad', 'Салата'),
+    ('soup', 'Супа'),
+    ('appetizer', 'Прдеястие'),
+    ('main_course', 'Основно ястие'),
+    ('dessert', 'Десерт'),
+    ('beverage', 'Напитка')
+]
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
@@ -12,14 +20,7 @@ class MenuItem(models.Model):
     image = models.ImageField(upload_to='menu_images/')
     category = models.CharField(
         max_length=50, 
-        choices=[
-            ('salad', 'Салата'),
-            ('soup', 'Супа'),
-            ('appetizer', 'Прдеястие'),
-            ('main_course', 'Основно ястие'),
-            ('dessert', 'Десерт'),
-            ('beverage', 'Напитка')
-        ]
+        choices=MENU_CATEGORIES
     )
     is_vegetarian = models.BooleanField(default=False)
 
