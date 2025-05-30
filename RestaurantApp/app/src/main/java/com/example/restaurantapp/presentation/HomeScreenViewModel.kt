@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
         _password.value = newPassword
     }
 
-    fun login(onSuccess: (String, String, String) -> Unit, onError: (String) -> Unit) {
+    fun login(onSuccess: (Int, String, String) -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
@@ -44,10 +44,10 @@ class LoginViewModel @Inject constructor(
 
                 when (response) {
                     is Success -> {
-                        val username = response.data?.username
+                        val userId = response.data?.userId
                         val firstName = response.data?.firstName
                         val lastName = response.data?.lastName
-                        onSuccess(username.toString(), firstName.toString(), lastName.toString())
+                        onSuccess(userId?.toInt() ?: 0, firstName.toString(), lastName.toString())
                     }
 
                     is ClientError -> {

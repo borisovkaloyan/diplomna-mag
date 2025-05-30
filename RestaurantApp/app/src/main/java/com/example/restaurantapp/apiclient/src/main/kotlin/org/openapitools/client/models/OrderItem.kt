@@ -15,6 +15,7 @@
 
 package org.openapitools.client.models
 
+import org.openapitools.client.models.MenuItem
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -22,26 +23,18 @@ import com.squareup.moshi.JsonClass
 /**
  * 
  *
- * @param userId 
- * @param username 
- * @param firstName 
- * @param lastName 
+ * @param menuItem 
+ * @param quantity 
  */
 
 
-data class UserLoginResponse (
+data class OrderItem (
 
-    @Json(name = "user_id")
-    val userId: kotlin.Int,
+    @Json(name = "menu_item")
+    val menuItem: MenuItem,
 
-    @Json(name = "username")
-    val username: kotlin.String,
-
-    @Json(name = "first_name")
-    val firstName: kotlin.String,
-
-    @Json(name = "last_name")
-    val lastName: kotlin.String
+    @Json(name = "quantity")
+    val quantity: kotlin.Long? = null
 
 ) {
 

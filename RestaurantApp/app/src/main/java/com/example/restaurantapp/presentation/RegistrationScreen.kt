@@ -1,8 +1,10 @@
 package com.example.restaurantapp.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -25,10 +27,16 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        Text("Register", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.padding(20.dp))
+
+        Text("Register", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
+
+        Spacer(modifier = Modifier.padding(8.dp))
 
         OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Username") })
         OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
@@ -47,11 +55,9 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
             visualTransformation = PasswordVisualTransformation()
         )
 
-        responseMessage?.let {
-            Text(it, color = MaterialTheme.colorScheme.error)
-        }
-
         val scope = rememberCoroutineScope()
+
+        Spacer(modifier = Modifier.padding(8.dp))
 
         Button(onClick = {
             if (password != confirmPassword) {
@@ -79,6 +85,12 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
             )
         }) {
             Text("Register")
+        }
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
+        responseMessage?.let {
+            Text(it, color = MaterialTheme.colorScheme.error)
         }
     }
 }

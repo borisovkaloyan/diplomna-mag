@@ -22,6 +22,8 @@ import okhttp3.HttpUrl
 import org.openapitools.client.models.MenuItem
 import org.openapitools.client.models.Order
 import org.openapitools.client.models.OrderCategory
+import org.openapitools.client.models.OrderRequest
+import org.openapitools.client.models.OrdersByUser
 import org.openapitools.client.models.UserLogin
 import org.openapitools.client.models.UserLoginResponse
 import org.openapitools.client.models.UserRegistration
@@ -114,6 +116,79 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
         return RequestConfig(
             method = RequestMethod.GET,
             path = "/api/menu-items/get-all-categories/",
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
+            body = localVariableBody
+        )
+    }
+
+    /**
+     * GET /api/menu-items/{id}/get-item-by-id/
+     * 
+     * 
+     * @param id A unique integer value identifying this menu item.
+     * @return MenuItem
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     * @throws UnsupportedOperationException If the API returns an informational or redirection response
+     * @throws ClientException If the API returns a client error response
+     * @throws ServerException If the API returns a server error response
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun apiMenuItemsGetItemByIdRetrieve(id: kotlin.Int) : MenuItem {
+        val localVarResponse = apiMenuItemsGetItemByIdRetrieveWithHttpInfo(id = id)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as MenuItem
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()} ${localVarError.body}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+     * GET /api/menu-items/{id}/get-item-by-id/
+     * 
+     * 
+     * @param id A unique integer value identifying this menu item.
+     * @return ApiResponse<MenuItem?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun apiMenuItemsGetItemByIdRetrieveWithHttpInfo(id: kotlin.Int) : ApiResponse<MenuItem?> {
+        val localVariableConfig = apiMenuItemsGetItemByIdRetrieveRequestConfig(id = id)
+
+        return request<Unit, MenuItem>(
+            localVariableConfig
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation apiMenuItemsGetItemByIdRetrieve
+     *
+     * @param id A unique integer value identifying this menu item.
+     * @return RequestConfig
+     */
+    fun apiMenuItemsGetItemByIdRetrieveRequestConfig(id: kotlin.Int) : RequestConfig<Unit> {
+        val localVariableBody = null
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.GET,
+            path = "/api/menu-items/{id}/get-item-by-id/".replace("{"+"id"+"}", encodeURIComponent(id.toString())),
             query = localVariableQuery,
             headers = localVariableHeaders,
             requiresAuthentication = true,
@@ -269,7 +344,7 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
      * POST /api/orders/create-order/
      * 
      * 
-     * @param order 
+     * @param orderRequest 
      * @return Order
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
@@ -279,8 +354,8 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun apiOrdersCreateOrderCreate(order: Order) : Order {
-        val localVarResponse = apiOrdersCreateOrderCreateWithHttpInfo(order = order)
+    fun apiOrdersCreateOrderCreate(orderRequest: OrderRequest) : Order {
+        val localVarResponse = apiOrdersCreateOrderCreateWithHttpInfo(orderRequest = orderRequest)
 
         return when (localVarResponse.responseType) {
             ResponseType.Success -> (localVarResponse as Success<*>).data as Order
@@ -301,17 +376,17 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
      * POST /api/orders/create-order/
      * 
      * 
-     * @param order 
+     * @param orderRequest 
      * @return ApiResponse<Order?>
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun apiOrdersCreateOrderCreateWithHttpInfo(order: Order) : ApiResponse<Order?> {
-        val localVariableConfig = apiOrdersCreateOrderCreateRequestConfig(order = order)
+    fun apiOrdersCreateOrderCreateWithHttpInfo(orderRequest: OrderRequest) : ApiResponse<Order?> {
+        val localVariableConfig = apiOrdersCreateOrderCreateRequestConfig(orderRequest = orderRequest)
 
-        return request<Order, Order>(
+        return request<OrderRequest, Order>(
             localVariableConfig
         )
     }
@@ -319,11 +394,11 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
     /**
      * To obtain the request config of the operation apiOrdersCreateOrderCreate
      *
-     * @param order 
+     * @param orderRequest 
      * @return RequestConfig
      */
-    fun apiOrdersCreateOrderCreateRequestConfig(order: Order) : RequestConfig<Order> {
-        val localVariableBody = order
+    fun apiOrdersCreateOrderCreateRequestConfig(orderRequest: OrderRequest) : RequestConfig<OrderRequest> {
+        val localVariableBody = orderRequest
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
         localVariableHeaders["Content-Type"] = "application/json"
@@ -410,10 +485,11 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
     }
 
     /**
-     * GET /api/orders/orders-by-user/
+     * POST /api/orders/orders-by-user/
      * 
      * 
-     * @return Order
+     * @param ordersByUser 
+     * @return kotlin.collections.List<Order>
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
      * @throws UnsupportedOperationException If the API returns an informational or redirection response
@@ -422,11 +498,11 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
-    fun apiOrdersOrdersByUserRetrieve() : Order {
-        val localVarResponse = apiOrdersOrdersByUserRetrieveWithHttpInfo()
+    fun apiOrdersOrdersByUserCreate(ordersByUser: OrdersByUser) : kotlin.collections.List<Order> {
+        val localVarResponse = apiOrdersOrdersByUserCreateWithHttpInfo(ordersByUser = ordersByUser)
 
         return when (localVarResponse.responseType) {
-            ResponseType.Success -> (localVarResponse as Success<*>).data as Order
+            ResponseType.Success -> (localVarResponse as Success<*>).data as kotlin.collections.List<Order>
             ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
             ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
             ResponseType.ClientError -> {
@@ -441,36 +517,39 @@ class ApiApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = A
     }
 
     /**
-     * GET /api/orders/orders-by-user/
+     * POST /api/orders/orders-by-user/
      * 
      * 
-     * @return ApiResponse<Order?>
+     * @param ordersByUser 
+     * @return ApiResponse<kotlin.collections.List<Order>?>
      * @throws IllegalStateException If the request is not correctly configured
      * @throws IOException Rethrows the OkHttp execute method exception
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class, IOException::class)
-    fun apiOrdersOrdersByUserRetrieveWithHttpInfo() : ApiResponse<Order?> {
-        val localVariableConfig = apiOrdersOrdersByUserRetrieveRequestConfig()
+    fun apiOrdersOrdersByUserCreateWithHttpInfo(ordersByUser: OrdersByUser) : ApiResponse<kotlin.collections.List<Order>?> {
+        val localVariableConfig = apiOrdersOrdersByUserCreateRequestConfig(ordersByUser = ordersByUser)
 
-        return request<Unit, Order>(
+        return request<OrdersByUser, kotlin.collections.List<Order>>(
             localVariableConfig
         )
     }
 
     /**
-     * To obtain the request config of the operation apiOrdersOrdersByUserRetrieve
+     * To obtain the request config of the operation apiOrdersOrdersByUserCreate
      *
+     * @param ordersByUser 
      * @return RequestConfig
      */
-    fun apiOrdersOrdersByUserRetrieveRequestConfig() : RequestConfig<Unit> {
-        val localVariableBody = null
+    fun apiOrdersOrdersByUserCreateRequestConfig(ordersByUser: OrdersByUser) : RequestConfig<OrdersByUser> {
+        val localVariableBody = ordersByUser
         val localVariableQuery: MultiValueMap = mutableMapOf()
         val localVariableHeaders: MutableMap<String, String> = mutableMapOf()
+        localVariableHeaders["Content-Type"] = "application/json"
         localVariableHeaders["Accept"] = "application/json"
 
         return RequestConfig(
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             path = "/api/orders/orders-by-user/",
             query = localVariableQuery,
             headers = localVariableHeaders,

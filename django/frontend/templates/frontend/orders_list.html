@@ -171,8 +171,8 @@
                             <td data-label="Email">{{ order.user.email }}</td>
                             <td data-label="Items">
                                 <ul>
-                                    {% for item in order.items.all %}
-                                        <li>{{ item.name }} - {{ item.price }}лв.</li>
+                                    {% for order_item in order.order_items.all %}
+                                        <li>{{ order_item.menu_item.name }} - {{ order_item.menu_item.price }}лв. x {{ order_item.quantity }}</li>
                                     {% endfor %}
                                 </ul>
                             </td>

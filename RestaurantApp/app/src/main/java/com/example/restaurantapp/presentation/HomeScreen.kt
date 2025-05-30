@@ -1,3 +1,4 @@
+import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +56,7 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -89,8 +92,8 @@ fun HomeScreen(
 
         Button(onClick = {
             viewModel.login(
-                onSuccess = { username: String, firstName: String, lastName: String ->
-                    navController.navigate(Screen.MenuScreen.createRoute(username, firstName, lastName)) {
+                onSuccess = { userId: Int, firstName: String, lastName: String ->
+                    navController.navigate(Screen.MenuScreen.createRoute(userId, firstName, lastName)) {
                         popUpTo(Screen.HomeScreen.route) { inclusive = true }
                     }
                 },

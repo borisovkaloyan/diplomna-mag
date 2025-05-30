@@ -5,10 +5,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_spectacular.utils import extend_schema
 
-from backend.models import MenuItem, Order
+from backend.models import MenuItem, Order, OrderItem
 from backend.serializers import (
     MenuItemSerializer,
+    OrderRequestSerializer,
     OrderSerializer,
+    OrdersByUserSerializer,
     UserLoginResponseSerializer,
     UserRegistrationResponseSerializer,
     UserRegistrationSerializer,
@@ -48,33 +50,57 @@ class MenuItemViewSet(viewsets.ViewSet):
         items = MenuItem.objects.all()
         serializer = MenuItemSerializer(items, many=True)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], url_path='get-item-by-id')
+    def get_item_by_id(self, request, pk='id'):
+        item_id = pk
+        if not item_id:
+            return Response({'error': 'Item ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            item = MenuItem.objects.get(id=item_id)
+            serializer = MenuItemSerializer(item)
+            return Response(serializer.data)
+        except MenuItem.DoesNotExist:
+            return Response({'error': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-    @action(detail=False, methods=['get'], url_path='orders-by-user')
+    @extend_schema(
+        request=OrdersByUserSerializer,
+        responses=OrderSerializer(many=True)
+    )
+    @action(detail=False, methods=['post'], url_path='orders-by-user')
     def orders_by_user(self, request):
-        user_id = request.query_params.get('user_id')
-        if not user_id:
-            return Response({'error': 'User ID parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = OrdersByUserSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        user_id = serializer.validated_data.get('user_id')
         
         orders = Order.objects.filter(user_id=user_id).order_by('-order_date')
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
     
+    @extend_schema(
+        request=OrderRequestSerializer,
+        responses=OrderSerializer
+    )
     @action(detail=False, methods=['post'], url_path='create-order')
     def create_order(self, request):
-        serializer = OrderSerializer(data=request.data)
+        serializer = OrderRequestSerializer(data=request.data)
         if serializer.is_valid():
-            order = serializer.save()
-            return Response({
-                'message': 'Order created successfully',
-                'order_id': order.id,
-                'total_amount': str(order.total_amount),
-                'status': order.status,
-            }, status=status.HTTP_201_CREATED)
+            order = OrderSerializer(data=serializer.validated_data)
+            if order.is_valid():
+                order = order.save()
+                response = OrderSerializer(order).data
+                return Response(response, status=status.HTTP_201_CREATED)
+            else:
+                return Response(order.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['get'], url_path='latest-order')
@@ -114,6 +140,7 @@ class UserViewSet(viewsets.ViewSet):
             user = serializer.validated_data
             return Response(
                 {
+                    'user_id': user.id,
                     'username': user.username,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
@@ -121,4 +148,3 @@ class UserViewSet(viewsets.ViewSet):
                 status=status.HTTP_202_ACCEPTED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    

@@ -80,6 +80,12 @@ dependencies {
 
     // Image previews
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    // Location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
 
 openApiGenerate {

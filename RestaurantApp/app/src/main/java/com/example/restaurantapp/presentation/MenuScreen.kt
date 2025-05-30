@@ -1,7 +1,9 @@
 package com.example.restaurantapp.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
@@ -17,13 +19,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.restaurantapp.util.fullImageUrl
 import org.openapitools.client.models.CategoryEnum
 import org.openapitools.client.models.MenuItem
 
 @Composable
-fun MenuScreen(baseUrl: String, viewModel: MenuViewModel = hiltViewModel()) {
+fun MenuScreen(
+    userId: Int,
+    firstName: String,
+    lastName: String,
+    baseUrl: String,
+    viewModel: MenuViewModel = hiltViewModel()
+) {
     var selectedTab by remember { mutableStateOf("Menu") }
     var selectedCategory by remember { mutableStateOf<CategoryEnum?>(null) }
 
@@ -37,69 +46,68 @@ fun MenuScreen(baseUrl: String, viewModel: MenuViewModel = hiltViewModel()) {
         }
     }
 
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(selectedTab) { selectedTab = it }
-        }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "Menu Categories",
-                fontSize = 24.sp,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        Spacer(modifier = Modifier.padding(20.dp))
 
-            // Show categories
-            CategoryEnum.values().forEach { category ->
+        Text(
+            text = "Menu Categories",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Show categories
+        CategoryEnum.values().forEach { category ->
+            Text(
+                text = category.value,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .clickable {
+                        selectedCategory = category
+                    }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Show loading or error
+        when {
+            isLoading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
+            error != null -> {
                 Text(
-                    text = category.value,
-                    fontSize = 18.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable {
-                            selectedCategory = category
-                        }
+                    text = error ?: "",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Show loading or error
-            when {
-                isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                }
-                error != null -> {
-                    Text(
-                        text = error ?: "",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+            selectedCategory != null -> {
+                Text(
+                    text = "Items in ${selectedCategory!!.value}:",
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                items.forEach { item ->
+                    MenuItemCard(
+                        item = item,
+                        baseUrl = baseUrl,
+                        onAddToCart = { viewModel.addToCart(it) }
                     )
-                }
-                selectedCategory != null -> {
-                    Text(
-                        text = "Items in ${selectedCategory!!.value}:",
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                    items.forEach { item ->
-                        MenuItemCard(
-                            item = item,
-                            baseUrl = baseUrl,
-                            onAddToCart = { viewModel.addToCart(it) }
-                        )
-                    }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun MenuItemCard(
@@ -171,29 +179,5 @@ fun MenuItemCard(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBar(selectedTab: String, onTabSelected: (String) -> Unit) {
-    NavigationBar {
-        NavigationBarItem(
-            selected = selectedTab == "Menu",
-            onClick = { onTabSelected("Menu") },
-            icon = { Icon(Icons.Default.Menu, contentDescription = "Menu") },
-            label = { Text("Menu") }
-        )
-        NavigationBarItem(
-            selected = selectedTab == "User",
-            onClick = { onTabSelected("User") },
-            icon = { Icon(Icons.Default.Person, contentDescription = "User") },
-            label = { Text("User") }
-        )
-        NavigationBarItem(
-            selected = selectedTab == "Cart",
-            onClick = { onTabSelected("Cart") },
-            icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
-            label = { Text("Cart") }
-        )
     }
 }

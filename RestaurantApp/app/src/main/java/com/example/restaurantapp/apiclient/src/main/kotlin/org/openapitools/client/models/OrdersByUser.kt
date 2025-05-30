@@ -23,25 +23,13 @@ import com.squareup.moshi.JsonClass
  * 
  *
  * @param userId 
- * @param username 
- * @param firstName 
- * @param lastName 
  */
 
 
-data class UserLoginResponse (
+data class OrdersByUser (
 
     @Json(name = "user_id")
-    val userId: kotlin.Int,
-
-    @Json(name = "username")
-    val username: kotlin.String,
-
-    @Json(name = "first_name")
-    val firstName: kotlin.String,
-
-    @Json(name = "last_name")
-    val lastName: kotlin.String
+    val userId: kotlin.Int
 
 ) {
 

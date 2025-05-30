@@ -46,11 +46,12 @@ All URIs are relative to *http://localhost*
 | Class | Method | HTTP request | Description |
 | ------------ | ------------- | ------------- | ------------- |
 | *ApiApi* | [**apiMenuItemsGetAllCategoriesRetrieve**](docs/ApiApi.md#apimenuitemsgetallcategoriesretrieve) | **GET** /api/menu-items/get-all-categories/ |  |
+| *ApiApi* | [**apiMenuItemsGetItemByIdRetrieve**](docs/ApiApi.md#apimenuitemsgetitembyidretrieve) | **GET** /api/menu-items/{id}/get-item-by-id/ |  |
 | *ApiApi* | [**apiMenuItemsItemsByCategoryCreate**](docs/ApiApi.md#apimenuitemsitemsbycategorycreate) | **POST** /api/menu-items/items-by-category/ |  |
 | *ApiApi* | [**apiMenuItemsList**](docs/ApiApi.md#apimenuitemslist) | **GET** /api/menu-items/ |  |
 | *ApiApi* | [**apiOrdersCreateOrderCreate**](docs/ApiApi.md#apiorderscreateordercreate) | **POST** /api/orders/create-order/ |  |
 | *ApiApi* | [**apiOrdersLatestOrderRetrieve**](docs/ApiApi.md#apiorderslatestorderretrieve) | **GET** /api/orders/latest-order/ |  |
-| *ApiApi* | [**apiOrdersOrdersByUserRetrieve**](docs/ApiApi.md#apiordersordersbyuserretrieve) | **GET** /api/orders/orders-by-user/ |  |
+| *ApiApi* | [**apiOrdersOrdersByUserCreate**](docs/ApiApi.md#apiordersordersbyusercreate) | **POST** /api/orders/orders-by-user/ |  |
 | *ApiApi* | [**apiUsersLoginCreate**](docs/ApiApi.md#apiuserslogincreate) | **POST** /api/users/login/ |  |
 | *ApiApi* | [**apiUsersRegisterCreate**](docs/ApiApi.md#apiusersregistercreate) | **POST** /api/users/register/ |  |
 | *SchemaApi* | [**schemaRetrieve**](docs/SchemaApi.md#schemaretrieve) | **GET** /schema/ |  |
@@ -63,6 +64,9 @@ All URIs are relative to *http://localhost*
  - [org.openapitools.client.models.MenuItem](docs/MenuItem.md)
  - [org.openapitools.client.models.Order](docs/Order.md)
  - [org.openapitools.client.models.OrderCategory](docs/OrderCategory.md)
+ - [org.openapitools.client.models.OrderItem](docs/OrderItem.md)
+ - [org.openapitools.client.models.OrderRequest](docs/OrderRequest.md)
+ - [org.openapitools.client.models.OrdersByUser](docs/OrdersByUser.md)
  - [org.openapitools.client.models.StatusEnum](docs/StatusEnum.md)
  - [org.openapitools.client.models.UserLogin](docs/UserLogin.md)
  - [org.openapitools.client.models.UserLoginResponse](docs/UserLoginResponse.md)

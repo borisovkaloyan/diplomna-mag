@@ -68,12 +68,12 @@ class BLEDataReceiveManagerImpl @Inject constructor(
     @RequiresPermission(Manifest.permission.BLUETOOTH_SCAN)
     override fun discover() {
         coroutineScope.launch {
-            data.emit(Resource.Loading(message = "Scanning for BLE devices..."))
+//            data.emit(Resource.Loading(message = "Scanning for BLE devices..."))
 
             isScanning = true
             bleScanner.startScan(null, scanSettings, scanCallback)
 
-            delay(10_000)
+            delay(2000)
 
             bleScanner.stopScan(scanCallback)
             isScanning = false

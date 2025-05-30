@@ -15,6 +15,7 @@
 
 package org.openapitools.client.models
 
+import org.openapitools.client.models.OrderItem
 import org.openapitools.client.models.StatusEnum
 
 import com.squareup.moshi.Json
@@ -24,12 +25,13 @@ import com.squareup.moshi.JsonClass
  * 
  *
  * @param id 
+ * @param user 
  * @param orderDate 
  * @param deliveryAddress 
- * @param user 
- * @param items 
+ * @param orderItems 
  * @param totalAmount 
  * @param status 
+ * @param items 
  */
 
 
@@ -38,23 +40,26 @@ data class Order (
     @Json(name = "id")
     val id: kotlin.Int,
 
+    @Json(name = "user")
+    val user: kotlin.Int,
+
     @Json(name = "order_date")
     val orderDate: java.time.OffsetDateTime,
 
     @Json(name = "delivery_address")
     val deliveryAddress: kotlin.String,
 
-    @Json(name = "user")
-    val user: kotlin.Int,
-
-    @Json(name = "items")
-    val items: kotlin.collections.List<kotlin.Int>,
+    @Json(name = "order_items")
+    val orderItems: kotlin.collections.List<OrderItem>,
 
     @Json(name = "total_amount")
     val totalAmount: java.math.BigDecimal? = null,
 
     @Json(name = "status")
-    val status: StatusEnum? = null
+    val status: StatusEnum? = null,
+
+    @Json(name = "items")
+    val items: kotlin.collections.List<kotlin.Int>? = null
 
 ) {
 
