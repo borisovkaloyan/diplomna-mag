@@ -131,7 +131,21 @@
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <body>
-    <h1>Orders Grouped by Status</h1>
+    {% if user.is_authenticated %}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <strong>Welcome, {{ user.get_full_name|default:user.username }}</strong>
+            </div>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #4F46E5; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
+                    Logout
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    <h1>Orders For {{selected_date}} Grouped by Status</h1>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <div class="date-filter">

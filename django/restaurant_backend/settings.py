@@ -134,3 +134,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+# login stuff
+
+LOGIN_URL = '/frontend/accounts/login/'
+LOGOUT_REDIRECT_URL = '/frontend/accounts/login/'
+LOGIN_REDIRECT_URL = '/frontend/orders/'

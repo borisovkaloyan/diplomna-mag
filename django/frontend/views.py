@@ -1,8 +1,18 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse_lazy
 from django.utils.dateparse import parse_date
 from backend.models import Order
 from datetime import date
 from django.db.models.functions import TruncDate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView 
+
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('login')  # or wherever you want to redirect after logout
+
 
 # Status transition logic
 STATUS_FLOW = {
@@ -11,7 +21,7 @@ STATUS_FLOW = {
     'delivering': 'completed'
 }
 
-
+@login_required
 def orders_list(request):
     # Get distinct dates with orders
     available_dates = list(
@@ -47,7 +57,7 @@ def orders_list(request):
         }
     )
 
-
+@login_required
 def advance_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     next_status = STATUS_FLOW.get(order.status)
