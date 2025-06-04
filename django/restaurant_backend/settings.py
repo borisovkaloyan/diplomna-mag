@@ -151,3 +151,5 @@ REST_FRAMEWORK = {
 LOGIN_URL = '/frontend/accounts/login/'
 LOGOUT_REDIRECT_URL = '/frontend/accounts/login/'
 LOGIN_REDIRECT_URL = '/frontend/orders/'
+
+CSRF_TRUSTED_ORIGINS = ['https://magister.applikuapp.com']
