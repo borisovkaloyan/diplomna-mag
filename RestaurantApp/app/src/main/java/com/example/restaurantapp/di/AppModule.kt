@@ -26,7 +26,7 @@ object AppModule {
     @Singleton
     @BaseUrl
     fun provideBaseUrl(): String {
-        return "http://192.168.0.242:8000"
+        return "http://52.208.42.82:8000"
     }
 
     @Provides
