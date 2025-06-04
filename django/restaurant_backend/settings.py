@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 # fuck safety
 
-from django.views.static import serve
-serve()
+# from django.views.static import serve
+# serve()
 
 from pathlib import Path
 
