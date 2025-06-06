@@ -34,24 +34,24 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
     ) {
         Spacer(modifier = Modifier.padding(20.dp))
 
-        Text("Register", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
+        Text("Регистрация", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
 
         Spacer(modifier = Modifier.padding(8.dp))
 
-        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Username") })
+        OutlinedTextField(value = username, onValueChange = { username = it }, label = { Text("Потребителско име") })
         OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-        OutlinedTextField(value = firstName, onValueChange = { firstName = it }, label = { Text("First Name") })
-        OutlinedTextField(value = lastName, onValueChange = { lastName = it }, label = { Text("Last Name") })
+        OutlinedTextField(value = firstName, onValueChange = { firstName = it }, label = { Text("Първо име") })
+        OutlinedTextField(value = lastName, onValueChange = { lastName = it }, label = { Text("Фамилно име") })
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Парола") },
             visualTransformation = PasswordVisualTransformation()
         )
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Confirm Password") },
+            label = { Text("Потвърди парола") },
             visualTransformation = PasswordVisualTransformation()
         )
 
@@ -61,7 +61,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
 
         Button(onClick = {
             if (password != confirmPassword) {
-                responseMessage = "Passwords do not match"
+                responseMessage = "Паролите не съвпадат"
                 return@Button
             }
 
@@ -84,7 +84,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                 }
             )
         }) {
-            Text("Register")
+            Text("Регистрирай се")
         }
 
         Spacer(modifier = Modifier.padding(8.dp))

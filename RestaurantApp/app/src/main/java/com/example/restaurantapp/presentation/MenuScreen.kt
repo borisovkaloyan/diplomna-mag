@@ -57,7 +57,7 @@ fun MenuScreen(
         Spacer(modifier = Modifier.padding(20.dp))
 
         Text(
-            text = "Menu Categories",
+            text = "Категории",
             fontSize = 24.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -92,7 +92,7 @@ fun MenuScreen(
             }
             selectedCategory != null -> {
                 Text(
-                    text = "Items in ${selectedCategory!!.value}:",
+                    text = "Продукти в категория ${selectedCategory!!.value}:",
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
@@ -165,7 +165,7 @@ fun MenuItemCard(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Price: \$${item.price}",
+                    text = "Цена: ${item.price}лв",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -174,7 +174,7 @@ fun MenuItemCard(
             IconButton(onClick = { onAddToCart(item) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add to Cart",
+                    contentDescription = "Добави в количка",
                     tint = MaterialTheme.colorScheme.primary
                 )
             }

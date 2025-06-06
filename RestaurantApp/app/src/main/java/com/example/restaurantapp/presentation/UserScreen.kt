@@ -44,21 +44,21 @@ fun UserScreen(
         Spacer(modifier = Modifier.padding(20.dp))
 
         Text(
-            text = "Welcome $firstName $lastName!",
+            text = "Добре дошли $firstName $lastName!",
             style = MaterialTheme.typography.headlineMedium
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Past Orders",
+            text = "Предходни поръчки",
             style = MaterialTheme.typography.titleLarge
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         if (orders.isEmpty()) {
-            Text("No previous orders", style = MaterialTheme.typography.bodyLarge)
+            Text("Няма предходни поръчки", style = MaterialTheme.typography.bodyLarge)
         } else {
             LazyColumn(
                 modifier = Modifier
@@ -77,10 +77,10 @@ fun UserScreen(
                         elevation = CardDefaults.cardElevation(4.dp)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
-                            Text("Order ID: ${order.id}")
-                            Text("Date: ${order.orderDate.toLocalDate()}")
-                            Text("Total: $${order.totalAmount ?: "N/A"}")
-                            Text("Status: ${order.status ?: "Unknown"}")
+                            Text("Идентификатор на поръчка: ${order.id}")
+                            Text("Дата: ${order.orderDate.toLocalDate()}")
+                            Text("Сума: ${order.totalAmount ?: "N/A"}лв.")
+                            Text("Статус: ${order.status ?: "Неизвестен"}")
                         }
                     }
                 }

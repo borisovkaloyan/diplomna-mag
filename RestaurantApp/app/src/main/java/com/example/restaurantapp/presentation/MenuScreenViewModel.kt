@@ -54,7 +54,7 @@ class MenuViewModel @Inject constructor (
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            onLocationReceived("Location permission not granted")
+            onLocationReceived("Не е получено разрешение за локация")
             return
         }
 
@@ -71,7 +71,7 @@ class MenuViewModel @Inject constructor (
                                 // You can use just the address line or construct something more specific
                                 addr.getAddressLine(0)
                             } else {
-                                "Err: Unknown location"
+                                "Err: Неизвестна локация"
                             }
 
                             withContext(Dispatchers.Main) {
@@ -79,16 +79,16 @@ class MenuViewModel @Inject constructor (
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
-                                onLocationReceived("Err: Geocoding failed: ${e.localizedMessage}")
+                                onLocationReceived("Err: Не е открита локация: ${e.localizedMessage}")
                             }
                         }
                     }
                 } else {
-                    onLocationReceived("Err: Location not available")
+                    onLocationReceived("Err: Не е открита локация")
                 }
             }
             .addOnFailureListener {
-                onLocationReceived("Err: Location fetch failed")
+                onLocationReceived("Err: Не е открита локация")
             }
     }
 
@@ -185,13 +185,13 @@ class MenuViewModel @Inject constructor (
                 val createdOrder = withContext(Dispatchers.IO) {
                     api.apiOrdersCreateOrderCreate(order)
                 }
-                Toast.makeText(context, "Order created! \nStatus: ${createdOrder.status}", Toast.LENGTH_LONG)
+                Toast.makeText(context, "Поръчка създадена! \nСтатус: ${createdOrder.status}", Toast.LENGTH_LONG)
                     .show()
 
                 clearCart()
 
             } catch (e: Exception) {
-                Toast.makeText(context, "Error creating order: ${e.message}", Toast.LENGTH_LONG)
+                Toast.makeText(context, "Проблем при създаване на поръчка: ${e.message}", Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -211,7 +211,7 @@ class MenuViewModel @Inject constructor (
                 }
                 _menuItems.value = items
             } catch (e: Exception) {
-                _error.value = "Failed to load items: ${e.localizedMessage}"
+                _error.value = "Неуспешно зареждане на продукти: ${e.localizedMessage}"
             } finally {
                 _isLoading.value = false
             }

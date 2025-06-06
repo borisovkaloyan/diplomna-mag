@@ -72,7 +72,7 @@ fun HomeScreen(
         OutlinedTextField(
             value = username,
             onValueChange = { newText -> viewModel.onUsernameChanged(newText) },
-            label = { Text("Username") },
+            label = { Text("Потребителско име") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -82,7 +82,7 @@ fun HomeScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { newText -> viewModel.onPasswordChanged(newText) },
-            label = { Text("Password") },
+            label = { Text("Парола") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
@@ -99,11 +99,11 @@ fun HomeScreen(
                 },
                 onError = { errorMessage ->
                     message.value = errorMessage
-                    println("Login error: $errorMessage")
+                    println("Грешка при вход: $errorMessage")
                 }
             )
         }) {
-            Text("Login")
+            Text("Вход")
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -111,7 +111,7 @@ fun HomeScreen(
         Button(onClick = {
             navController.navigate(Screen.Register.route)
         }) {
-            Text("Register New User")
+            Text("Регистрация на нов потребител")
         }
     }
 }

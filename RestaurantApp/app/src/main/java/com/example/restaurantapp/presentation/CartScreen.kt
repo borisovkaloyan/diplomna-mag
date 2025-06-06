@@ -47,7 +47,7 @@ fun CartScreen(
     val context = LocalContext.current
 
     var showSheet by remember { mutableStateOf(false) }
-    var address by remember { mutableStateOf("Fetching location...") }
+    var address by remember { mutableStateOf("") }
 
 
     // ble shit
@@ -87,12 +87,12 @@ fun CartScreen(
         // Show permission rationale or error if needed
         if (!permissionState.allPermissionsGranted) {
             Text(
-                text = "Bluetooth permissions are required to scan for devices.",
+                text = "Необходими са Bluetooth разрешения.",
                 color = MaterialTheme.colorScheme.error
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = { permissionState.launchMultiplePermissionRequest() }) {
-                Text("Grant Permissions")
+                Text("Дай разрешения")
             }
             return@Column
         }
@@ -105,10 +105,10 @@ fun CartScreen(
         }
 
 
-        Text("Cart for $firstName $lastName", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Text("Кошница на $firstName $lastName", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
         if (cartItems.isEmpty()) {
-            Text("Your cart is empty.", modifier = Modifier.padding(top = 16.dp))
+            Text("Кошницата е празна.", modifier = Modifier.padding(top = 16.dp))
         } else {
             val groupedItems = cartItems.groupBy { it.id }
 
@@ -128,7 +128,7 @@ fun CartScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Divider()
             Text(
-                text = "Total: $${total}",
+                text = "Сума: ${total}лв.",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.End).padding(top = 16.dp)
@@ -140,7 +140,7 @@ fun CartScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Submit Order")
+                Text("Подай поръчка")
             }
 
             if (showSheet) {
@@ -159,12 +159,12 @@ fun CartScreen(
                     }
 
                     if (best_device != null) {
-                        address = best_device.deviceName.replace("_", " ")
+                        address = "Маса ${best_device.deviceName.substringAfter('_')}"
                     } else {
                         viewModel.getLastKnownLocation(context) { location ->
                             if (location.startsWith("Err:")) {
                                 // Show a message or re-request permission
-                                Toast.makeText(context, "Failed to determine location or table ID", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Не успяхме да определим местоположение или номер на маса", Toast.LENGTH_SHORT).show()
                                 return@getLastKnownLocation
                             } else {
                                 address = location
@@ -173,6 +173,8 @@ fun CartScreen(
                     }
                 }
 
+                var tempAddress by remember { mutableStateOf("") }
+
                 ModalBottomSheet(
                     onDismissRequest = { showSheet = false }
                 ) {
@@ -180,17 +182,31 @@ fun CartScreen(
                         .fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Total: $${total}", style = MaterialTheme.typography.titleMedium)
+                        Text("Сума: ${total}лв.", style = MaterialTheme.typography.titleMedium)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Box(modifier = Modifier
                         .fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            "Your location: $address",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+
+                        if (address.isEmpty()) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text("Въведете адрес ръчно:", style = MaterialTheme.typography.bodyMedium)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                TextField(
+                                    value = tempAddress,
+                                    onValueChange = { tempAddress = it },
+                                    placeholder = { Text("Адрес") },
+                                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                                )
+                            }
+                        } else {
+                            Text(
+                                "Вашата локация: $address",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Button(
@@ -199,7 +215,11 @@ fun CartScreen(
                             val userId = userId
                             val items = cartItems.map { it.id }
 
-                            if (address != "Fetching location...") {
+                            if (address == "") {
+                                address = tempAddress
+                            }
+
+                            if (address != "") {
                                 val order = OrderRequest(
                                     deliveryAddress = address,
                                     user = userId,
@@ -207,10 +227,11 @@ fun CartScreen(
                                 )
                                 viewModel.createOrder(order, context)
                             }
+
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Pay Now")
+                        Text("Плати сега")
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -241,7 +262,7 @@ fun CartItemCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onDecrease, enabled = count > 1) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Decrease")
+                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Намали")
                 }
                 Text(
                     text = count.toString(),
@@ -249,13 +270,13 @@ fun CartItemCard(
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
                 IconButton(onClick = onIncrease) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Increase")
+                    Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Увеличи")
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = "Total: \$${item.price.multiply(count.toBigDecimal())}",
+                    text = "Сума: ${item.price.multiply(count.toBigDecimal())}лв.",
                     fontWeight = FontWeight.Medium
                 )
             }

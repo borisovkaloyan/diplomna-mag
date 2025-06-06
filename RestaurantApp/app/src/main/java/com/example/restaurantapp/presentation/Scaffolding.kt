@@ -29,8 +29,8 @@ fun BottomNavigationBar(
                 onTabSelected("Menu")
                 navController.navigate(Screen.MenuScreen.createRoute(userId, firstName, lastName))
             },
-            icon = { Icon(Icons.Default.Menu, contentDescription = "Menu") },
-            label = { Text("Menu") }
+            icon = { Icon(Icons.Default.Menu, contentDescription = "Меню") },
+            label = { Text("Меню") }
         )
         NavigationBarItem(
             selected = selectedTab == "User",
@@ -38,8 +38,8 @@ fun BottomNavigationBar(
                 onTabSelected("User")
                 navController.navigate(Screen.UserScreen.createRoute(userId, firstName, lastName))
             },
-            icon = { Icon(Icons.Default.Person, contentDescription = "User") },
-            label = { Text("User") }
+            icon = { Icon(Icons.Default.Person, contentDescription = "Потребител") },
+            label = { Text("Потребител") }
         )
         NavigationBarItem(
             selected = selectedTab == "Cart",
@@ -47,8 +47,8 @@ fun BottomNavigationBar(
                 onTabSelected("Cart")
                 navController.navigate(Screen.CartScreen.createRoute(userId, firstName, lastName))
             },
-            icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
-            label = { Text("Cart") }
+            icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Кошница") },
+            label = { Text("Кошница") }
         )
     }
 }

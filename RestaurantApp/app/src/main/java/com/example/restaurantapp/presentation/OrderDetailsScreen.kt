@@ -36,7 +36,7 @@ fun OrderDetailsScreen(
     val order = viewModel.selectedOrder.collectAsState().value
 
     if (order == null) {
-        Text("Loading...")
+        Text("Зареждане...")
         return
     }
 
@@ -45,20 +45,21 @@ fun OrderDetailsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.padding(20.dp))
 
-        Text("Order ID: ${order.id}", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
-        Text("Date: ${order.orderDate.toLocalDate()}", color = MaterialTheme.colorScheme.onBackground)
-        Text("Total: $${order.totalAmount ?: "N/A"}", color = MaterialTheme.colorScheme.onBackground)
-        Text("Status: ${order.status ?: "Unknown"}", color = MaterialTheme.colorScheme.onBackground)
+        Text("Идентификатор на поръчка: ${order.id}", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
+        Text("Дата: ${order.orderDate.toLocalDate()}", color = MaterialTheme.colorScheme.onBackground)
+        Text("Адрес: ${order.deliveryAddress}", color = MaterialTheme.colorScheme.onBackground)
+        Text("Сума: ${order.totalAmount ?: "N/A"}лв.", color = MaterialTheme.colorScheme.onBackground)
+        Text("Статус: ${order.status ?: "Неизвестен"}", color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Items:", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
+        Text("Артикули:", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground)
 
         if (order.orderItems.isEmpty()) {
-            Text("Loading items...", color = MaterialTheme.colorScheme.onBackground)
+            Text("Зареждане на артикули...", color = MaterialTheme.colorScheme.onBackground)
         } else {
             order.orderItems.forEach { item ->
 
@@ -84,9 +85,9 @@ fun OrderDetailsScreen(
                                 .padding(end = 16.dp)
                         )
                         Text(
-                            "• ${item.quantity} x ${item.menuItem.name} - $${
+                            "• ${item.quantity} x ${item.menuItem.name} - ${
                                 item.menuItem.price.multiply((item.quantity ?: 1L).toBigDecimal())
-                            }"
+                            }лв."
                         )
                     }
                 }
