@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
@@ -24,6 +25,7 @@ import coil.compose.AsyncImage
 import com.example.restaurantapp.util.fullImageUrl
 import org.openapitools.client.models.CategoryEnum
 import org.openapitools.client.models.MenuItem
+import androidx.compose.foundation.lazy.items
 
 @Composable
 fun MenuScreen(
@@ -96,12 +98,18 @@ fun MenuScreen(
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-                items.forEach { item ->
-                    MenuItemCard(
-                        item = item,
-                        baseUrl = baseUrl,
-                        onAddToCart = { viewModel.addToCart(it) }
-                    )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 80.dp) // Adjust based on your bottom bar height
+                ) {
+                    items(items) { item ->
+                        MenuItemCard(
+                            item = item,
+                            baseUrl = baseUrl,
+                            onAddToCart = { viewModel.addToCart(it) }
+                        )
+                    }
                 }
             }
         }
