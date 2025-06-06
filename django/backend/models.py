@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 MENU_CATEGORIES = [
-    ('salad', 'Салата'),
-    ('soup', 'Супа'),
-    ('appetizer', 'Прдеястие'),
-    ('main_course', 'Основно ястие'),
-    ('dessert', 'Десерт'),
-    ('beverage', 'Напитка')
+    ('Салата', 'Салата'),
+    ('Супа', 'Супа'),
+    ('Предястие', 'Прдеястие'),
+    ('Основно ястие', 'Основно ястие'),
+    ('Десерт', 'Десерт'),
+    ('Напитка', 'Напитка')
 ]
 
 class MenuItem(models.Model):

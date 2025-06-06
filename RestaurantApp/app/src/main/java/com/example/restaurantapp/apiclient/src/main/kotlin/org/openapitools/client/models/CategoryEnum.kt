@@ -20,31 +20,31 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * * `salad` - Салата * `soup` - Супа * `appetizer` - Прдеястие * `main_course` - Основно ястие * `dessert` - Десерт * `beverage` - Напитка
+ * * `Салата` - Салата * `Супа` - Супа * `Предястие` - Прдеястие * `Основно ястие` - Основно ястие * `Десерт` - Десерт * `Напитка` - Напитка
  *
- * Values: salad,soup,appetizer,main_course,dessert,beverage
+ * Values: Салата,Супа,Предястие,Основно_ястие,Десерт,Напитка
  */
 
 @JsonClass(generateAdapter = false)
 enum class CategoryEnum(val value: kotlin.String) {
 
-    @Json(name = "salad")
-    salad("salad"),
+    @Json(name = "Салата")
+    Салата("Салата"),
 
-    @Json(name = "soup")
-    soup("soup"),
+    @Json(name = "Супа")
+    Супа("Супа"),
 
-    @Json(name = "appetizer")
-    appetizer("appetizer"),
+    @Json(name = "Предястие")
+    Предястие("Предястие"),
 
-    @Json(name = "main_course")
-    main_course("main_course"),
+    @Json(name = "Основно ястие")
+    Основно_ястие("Основно ястие"),
 
-    @Json(name = "dessert")
-    dessert("dessert"),
+    @Json(name = "Десерт")
+    Десерт("Десерт"),
 
-    @Json(name = "beverage")
-    beverage("beverage");
+    @Json(name = "Напитка")
+    Напитка("Напитка");
 
     /**
      * Override [toString()] to avoid using the enum variable name as the value, and instead use

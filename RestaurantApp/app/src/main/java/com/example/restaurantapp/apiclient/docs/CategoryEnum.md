@@ -4,17 +4,17 @@
 ## Enum
 
 
-    * `salad` (value: `"salad"`)
+    * `Салата` (value: `"Салата"`)
 
-    * `soup` (value: `"soup"`)
+    * `Супа` (value: `"Супа"`)
 
-    * `appetizer` (value: `"appetizer"`)
+    * `Предястие` (value: `"Предястие"`)
 
-    * `main_course` (value: `"main_course"`)
+    * `Основно_ястие` (value: `"Основно ястие"`)
 
-    * `dessert` (value: `"dessert"`)
+    * `Десерт` (value: `"Десерт"`)
 
-    * `beverage` (value: `"beverage"`)
+    * `Напитка` (value: `"Напитка"`)
 
 
 
