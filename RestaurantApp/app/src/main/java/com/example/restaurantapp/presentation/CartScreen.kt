@@ -2,6 +2,7 @@ import android.bluetooth.BluetoothAdapter
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -32,6 +33,7 @@ import org.openapitools.client.models.MenuItem
 import org.openapitools.client.models.Order
 import org.openapitools.client.models.OrderRequest
 import java.time.OffsetDateTime
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -77,7 +79,7 @@ fun CartScreen(
     Column(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
-        .padding(16.dp),
+        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -111,18 +113,27 @@ fun CartScreen(
             Text("Кошницата е празна.", modifier = Modifier.padding(top = 16.dp))
         } else {
             val groupedItems = cartItems.groupBy { it.id }
+            val groupedList = groupedItems.entries.toList()
+            val total = groupedItems.entries.sumOf { (_, items) ->
+                items.first().price.multiply(items.size.toBigDecimal())
+            }
 
-            groupedItems.forEach { (_, items) ->
-                val item = items.first()
-                val count = items.size
-                total += item.price.multiply(count.toBigDecimal())
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f) // 👈 take available space, not full height
+                    .fillMaxWidth()
+            ) {
+                items(groupedList) { entry ->
+                    val item = entry.value.first()
+                    val count = entry.value.size
 
-                CartItemCard(
-                    item = item,
-                    count = count,
-                    onIncrease = { viewModel.addToCart(item) },
-                    onDecrease = { viewModel.removeFromCart(item) }
-                )
+                    CartItemCard(
+                        item = item,
+                        count = count,
+                        onIncrease = { viewModel.addToCart(item) },
+                        onDecrease = { viewModel.removeFromCart(item) }
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -131,13 +142,13 @@ fun CartScreen(
                 text = "Сума: ${total}лв.",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.End).padding(top = 16.dp)
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 16.dp)
             )
 
             Button(
-                onClick = {
-                    showSheet = true
-                },
+                onClick = { showSheet = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Подай поръчка")
