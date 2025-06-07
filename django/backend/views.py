@@ -19,6 +19,7 @@ from backend.serializers import (
 )
 
 # Create your views here.
+# MenuItemViewSet, OrderViewSet, UserViewSet
 
 class MenuItemViewSet(viewsets.ViewSet):
     queryset = MenuItem.objects.all()
@@ -103,6 +104,9 @@ class OrderViewSet(viewsets.ViewSet):
                 return Response(order.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # Kinda looks unused tbh... zero idea what this is for
+    # Leaving it here, cuz i don't want to break anything
+    # Ya know, just in case
     @action(detail=False, methods=['get'], url_path='latest-order')
     def latest_order(self, request):
         latest = Order.objects.order_by('-order_date').first()
