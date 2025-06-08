@@ -44,12 +44,12 @@ class Order(models.Model):
     status = models.CharField(
         max_length=20,
         choices=[
-            ('pending', 'Pending'),
-            ('preparing', 'Preparing'),
-            ('delivering', 'Delivering'),
-            ('completed', 'Completed')
+            ('Изчакване', 'Изчакване'),
+            ('Приготвяне', 'Приготвяне'),
+            ('Доставяне', 'Доставяне'),
+            ('Завършена', 'Завършена')
         ],
-        default='pending'
+        default='изчакване'
     )
     delivery_address = models.CharField(max_length=255)
 

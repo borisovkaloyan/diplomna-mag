@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Вход</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -69,19 +69,19 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>Вход</h2>
         {% if form.errors %}
-            <div class="error">Invalid username or password.</div>
+            <div class="error">Невалидно потребителско име или парола.</div>
         {% endif %}
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <label for="id_username">Username:</label>
+            <label for="id_username">Потребителско име:</label>
             {{ form.username }}
 
-            <label for="id_password">Password:</label>
+            <label for="id_password">Парола:</label>
             {{ form.password }}
 
-            <button type="submit">Login</button>
+            <button type="submit">Вход</button>
         </form>
     </div>
 </body>

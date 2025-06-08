@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>List of orders for the day</title>
+    <title>Списък с поръчки за деня</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -134,28 +134,28 @@
     {% if user.is_authenticated %}
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <div>
-                <strong>Welcome, {{ user.get_full_name|default:user.username }}</strong>
+                <strong>Добре дошли, {{ user.get_full_name|default:user.username }}</strong>
             </div>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" style="background-color: #4F46E5; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
-                    Logout
+                    Изход
                 </button>
             </form>
         </div>
     {% endif %}
 
-    <h1>Orders For {{selected_date}} Grouped by Status</h1>
+    <h1>Поръчки за {{selected_date}} групирани по статус</h1>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <div class="date-filter">
-            Total for the day: {{ total_amount_for_day }}лв.
+            Общо за деня: {{ total_amount_for_day }}лв.
         </div>
         <div class="date-filter">
             <form method="get">
-                <label for="date">Select date:</label>
+                <label for="date">Изберете дата:</label>
                 <input type="text" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-                <button type="submit">Filter</button>
+                <button type="submit">Филтрирай</button>
             </form>
         </div>
     </div>
@@ -164,48 +164,48 @@
     {% load tz %}
     {% load custom_tags %}
     {% for status, orders in grouped_orders.items %}
-        <h2>{{ status|capfirst }} Orders</h2>
+        <h2>Поръчки със статус {{ status|lower }}</h2>
         {% if orders %}
             <table>
                 <thead>
                     <tr>
-                        <th>Customer</th>
+                        <th>Клиент</th>
                         <th>Email</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Date</th>
-                        <th>Address</th>
-                        <th>Action</th>
+                        <th>Артикули</th>
+                        <th>Общо</th>
+                        <th>Дата</th>
+                        <th>Адрес</th>
+                        <th>Действие</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for order in orders %}
                         <tr>
-                            <td data-label="Customer">{{ order.user.get_full_name|default:order.user.username }}</td>
-                            <td data-label="Email">{{ order.user.email }}</td>
-                            <td data-label="Items">
+                            <td data-label="Клиент">{{ order.user.get_full_name|default:order.user.username }}</td>
+                            <td data-label="Имейл">{{ order.user.email }}</td>
+                            <td data-label="Артикули">
                                 <ul>
                                     {% for order_item in order.order_items.all %}
                                         <li>{{ order_item.menu_item.name }} - {{ order_item.menu_item.price }}лв. x {{ order_item.quantity }}</li>
                                     {% endfor %}
                                 </ul>
                             </td>
-                            <td data-label="Total">{{ order.total_amount }}лв.</td>
-                            <td data-label="Date">{{ order.order_date|localtime }}</td>
-                            <td data-label="Address">{{ order.delivery_address }}</td>
-                            <td data-label="Action">
+                            <td data-label="Общо">{{ order.total_amount }}лв.</td>
+                            <td data-label="Дата">{{ order.order_date|localtime }}</td>
+                            <td data-label="Адрес">{{ order.delivery_address }}</td>
+                            <td data-label="Действие">
                                 {% with next_status=STATUS_FLOW|get_item:order.status %}
                                     {% if selected_date == today %}
                                         {% if order.status != 'completed' %}
                                             <form action="{% url 'advance-order-status' order.id %}" method="post">
                                                 {% csrf_token %}
-                                                <button type="submit">Move to {{ next_status|capfirst }}</button>
+                                                <button type="submit">Премести към {{ next_status|capfirst }}</button>
                                             </form>
                                         {% else %}
-                                            <span class="no-action">No further actions. Order complete</span>
+                                            <span class="no-action">Няма повече действия. Поръчката е завършена</span>
                                         {% endif %}
                                     {% else %}
-                                        <span class="no-action">Actions not available for previous days</span>
+                                        <span class="no-action">Действията не са налични за предишни дни</span>
                                     {% endif %}
                                 {% endwith %}
                             </td>
@@ -214,7 +214,7 @@
                 </tbody>
             </table>
         {% else %}
-            <p>No {{ status|lower }} orders.</p>
+            <p>Няма поръчки със статус {{ status|lower }}.</p>
         {% endif %}
     {% endfor %}
 </body>
@@ -243,10 +243,10 @@
                 location.reload();  // reload page if new order is from today
             }
         } catch (err) {
-            console.error("Error checking for new orders:", err);
+            console.error("Грешка при проверка за нови поръчки:", err);
         }
     }
 
-    // Check every 10 seconds
+    // Проверка на всеки 10 секунди
     setInterval(checkForNewOrders, 10000);
 </script>

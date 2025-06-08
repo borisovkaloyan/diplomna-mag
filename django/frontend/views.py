@@ -16,9 +16,9 @@ class CustomLogoutView(LogoutView):
 
 # Status transition logic
 STATUS_FLOW = {
-    'pending': 'preparing',
-    'preparing': 'delivering',
-    'delivering': 'completed'
+    'Изчакване': 'Приготвяне',
+    'Приготвяне': 'Доставяне',
+    'Доставяне': 'Завършена'
 }
 
 @login_required
@@ -36,10 +36,10 @@ def orders_list(request):
     orders = Order.objects.select_related('user').prefetch_related('items').filter(order_date__date=filter_date)
 
     grouped_orders = {
-        'Pending': orders.filter(status='pending'),
-        'Preparing': orders.filter(status='preparing'),
-        'Delivering': orders.filter(status='delivering'),
-        'Completed': orders.filter(status='completed'),
+        'Изчакване': orders.filter(status='Изчакване'),
+        'Приготвяне': orders.filter(status='Приготвяне'),
+        'Доставяне': orders.filter(status='Доставяне'),
+        'Завършена': orders.filter(status='Завършена'),
     }
 
     total_money = sum(order.total_amount for order in orders)
