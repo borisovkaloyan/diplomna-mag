@@ -163,6 +163,8 @@ class MenuViewModel @Inject constructor (
                 }
                 _orders.value = response
             } catch (e: Exception) {
+//                Toast.makeText(context, "Проблем при създаване на поръчка: ${e.message}", Toast.LENGTH_LONG)
+//                    .show()
                 _orders.value = emptyList()
             }
         }

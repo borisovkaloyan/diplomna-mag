@@ -27,6 +27,7 @@ object AppModule {
     @BaseUrl
     fun provideBaseUrl(): String {
         return "https://magister.applikuapp.com"
+//        return "http://192.168.0.242:8000"
     }
 
     @Provides

@@ -20,25 +20,25 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
- * * `pending` - Pending * `preparing` - Preparing * `delivering` - Delivering * `completed` - Completed
+ * * `Изчакване` - Изчакване * `Приготвяне` - Приготвяне * `Доставяне` - Доставяне * `Завършена` - Завършена
  *
- * Values: pending,preparing,delivering,completed
+ * Values: Изчакване,Приготвяне,Доставяне,Завършена
  */
 
 @JsonClass(generateAdapter = false)
 enum class StatusEnum(val value: kotlin.String) {
 
-    @Json(name = "pending")
-    pending("pending"),
+    @Json(name = "Изчакване")
+    Изчакване("Изчакване"),
 
-    @Json(name = "preparing")
-    preparing("preparing"),
+    @Json(name = "Приготвяне")
+    Приготвяне("Приготвяне"),
 
-    @Json(name = "delivering")
-    delivering("delivering"),
+    @Json(name = "Доставяне")
+    Доставяне("Доставяне"),
 
-    @Json(name = "completed")
-    completed("completed");
+    @Json(name = "Завършена")
+    Завършена("Завършена");
 
     /**
      * Override [toString()] to avoid using the enum variable name as the value, and instead use

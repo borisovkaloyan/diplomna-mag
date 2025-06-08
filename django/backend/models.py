@@ -49,7 +49,7 @@ class Order(models.Model):
             ('Доставяне', 'Доставяне'),
             ('Завършена', 'Завършена')
         ],
-        default='изчакване'
+        default='Изчакване'
     )
     delivery_address = models.CharField(max_length=255)
 

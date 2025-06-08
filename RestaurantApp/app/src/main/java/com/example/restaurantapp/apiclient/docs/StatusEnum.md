@@ -4,13 +4,13 @@
 ## Enum
 
 
-    * `pending` (value: `"pending"`)
+    * `Изчакване` (value: `"Изчакване"`)
 
-    * `preparing` (value: `"preparing"`)
+    * `Приготвяне` (value: `"Приготвяне"`)
 
-    * `delivering` (value: `"delivering"`)
+    * `Доставяне` (value: `"Доставяне"`)
 
-    * `completed` (value: `"completed"`)
+    * `Завършена` (value: `"Завършена"`)
 
 
 
