@@ -196,7 +196,7 @@
                             <td data-label="Действие">
                                 {% with next_status=STATUS_FLOW|get_item:order.status %}
                                     {% if selected_date == today %}
-                                        {% if order.status != 'completed' %}
+                                        {% if order.status != 'Завършена' %}
                                             <form action="{% url 'advance-order-status' order.id %}" method="post">
                                                 {% csrf_token %}
                                                 <button type="submit">Премести към {{ next_status|capfirst }}</button>
